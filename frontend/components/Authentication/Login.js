@@ -81,11 +81,11 @@ const Login = () => {
 
   return (
     <Box
-      // minH="100vh"
-      bg="white"
+      bg="gray.900"
       py={12}
       px={4}
-      textColor={"black"}
+      textColor="white"
+      minH="100vh"
     >
       <Container 
         maxW="lg" 
@@ -93,13 +93,13 @@ const Login = () => {
         px={{ base: '0', sm: '8' }}
       >
         <Box
-          bg="white"
+          bg="gray.800"
           py="8"
           px={{ base: '4', md: '10' }}
           shadow="xl"
           rounded="xl"
           border="1px solid"
-          borderColor="white"
+          borderColor="gray.700"
         >
           <VStack spacing="6">
             <Box textAlign="center" w="full">
@@ -107,105 +107,84 @@ const Login = () => {
                 size="lg" 
                 fontWeight="bold" 
                 mb="2"
-                color="gray.800"
+                color="white"
               >
                 Welcome back
               </Heading>
-              <Text color="gray.600" fontSize="lg">
+              <Text color="gray.400" fontSize="lg">
                 Sign in to your account
               </Text>
             </Box>
 
-            <VStack spacing="5" w="90%" alignItems="left">
-              <FormControl isRequired>
-                <FormLabel color="gray.700" fontWeight="medium">Email Address</FormLabel>
+            <FormControl isRequired>
+              <FormLabel color="gray.300" fontWeight="medium">Email Address</FormLabel>
+              <Input
+                size="lg"
+                type="email"
+                placeholder="Enter Your Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                bg="gray.700"
+                color="white"
+                width="100%"
+                borderColor="gray.600"
+                _hover={{ borderColor: "gray.500" }}
+                _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
+                _placeholder={{ color: "gray.400" }}
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel color="gray.300" fontWeight="medium">Password</FormLabel>
+              <InputGroup size="lg">
                 <Input
-                  size="lg"
-                  type="email"
-                  placeholder="Enter Your Email Address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  bg="white"
-                  color="black"
-                  width="100%"
-                  borderColor="gray.500"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
+                  type={show ? "text" : "password"}
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  bg="gray.700"
+                  color="white"
+                  width="80%"
+                  borderColor="gray.600"
+                  _hover={{ borderColor: "gray.500" }}
+                  _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
+                  _placeholder={{ color: "gray.400" }}
                 />
-              </FormControl>
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="1.75rem"
+                    size="sm"
+                    onClick={handleClick}
+                    variant="ghost"
+                    color="gray.400"
+                    _hover={{ color: "white", bg: "gray.600" }}
+                  >
+                    {show ? "Hide" : "Show"}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
 
-              <FormControl isRequired>
-                <FormLabel color="gray.700" fontWeight="medium">Password</FormLabel>
-                <InputGroup size="lg">
-                  <Input
-                    type={show ? "text" : "password"}
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    bg="white"
-                    color="black"
-                    width="80%"
-                    borderColor="gray.500"
-                    _hover={{ borderColor: "gray.400" }}
-                    _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      h="1.75rem"
-                      size="sm"
-                      onClick={handleClick}
-                      variant="ghost"
-                      color="gray.600"
-                      _hover={{ color: "gray.800" }}
-                    >
-                      {show ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-            </VStack>
-
-            <VStack spacing="4" w="full">
-              <Button
-                w="full"
-                colorScheme="blue"
-                size="lg"
-                fontSize="md"
-                py={6}
-                onClick={submitHandler}
-                isLoading={loading}
-                loadingText="Signing in"
-                boxShadow="md"
-                _hover={{
-                  transform: 'translateY(-2px)',
-                  boxShadow: 'lg',
-                }}
-                transition="all 0.2s"
-              >
-                Sign in
-              </Button>
-
-              <Button
-                w="full"
-                variant="outline"
-                colorScheme="blue"
-                size="lg"
-                fontSize="md"
-                py={6}
-                onClick={() => {
-                  setEmail("guest@example.com");
-                  setPassword("123456");
-                }}
-                boxShadow="sm"
-                _hover={{
-                  transform: 'translateY(-2px)',
-                  boxShadow: 'md',
-                }}
-                transition="all 0.2s"
-              >
-                Use Guest Credentials
-              </Button>
-            </VStack>
+            <Button
+              colorScheme="blue"
+              width="100%"
+              style={{ marginTop: 15 }}
+              onClick={submitHandler}
+              isLoading={loading}
+            >
+              Sign In
+            </Button>
+            <Button
+              variant="solid"
+              colorScheme="red"
+              width="100%"
+              onClick={() => {
+                setEmail("guest@example.com");
+                setPassword("123456");
+              }}
+            >
+              Get Guest User Credentials
+            </Button>
           </VStack>
         </Box>
       </Container>

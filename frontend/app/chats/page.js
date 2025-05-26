@@ -32,15 +32,22 @@ const ChatPage = () => {
   }, [user, toast, router]);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ 
+      width: "100%", 
+      backgroundColor: "#1A202C",
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column"
+    }}>
       {user && <SideDrawer />}
       <Box
         as="div"
         display="flex"
         justifyContent="space-between"
         width="100%"
-        height="91.5vh"
+        flex="1"
         padding="10px"
+        bg="gray.900"
       >
         <Box
           as="div"
@@ -57,11 +64,12 @@ const ChatPage = () => {
             flexDirection="column"
             alignItems="center"
             padding={3}
-            bg="white"
+            bg="gray.800"
             width="100%"
             height="100%"
             borderRadius="lg"
             borderWidth="1px"
+            borderColor="gray.700"
           >
             <Box
               as="div"

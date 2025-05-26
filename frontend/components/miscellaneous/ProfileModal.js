@@ -109,22 +109,43 @@ const ProfileModal = ({ user, children }) => {
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+        <IconButton 
+          d={{ base: "flex" }} 
+          icon={<ViewIcon />} 
+          onClick={onOpen}
+          size="sm"
+          variant="ghost"
+          color="gray.400"
+          _hover={{ 
+            color: "white",
+            bg: "gray.700",
+            transform: "scale(1.1)"
+          }}
+          transition="all 0.2s"
+        />
       )}
       <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
-        <ModalOverlay />
-        <ModalContent h="410px">
+        <ModalOverlay backdropFilter="blur(10px)" />
+        <ModalContent 
+          bg="gray.800" 
+          borderColor="gray.700"
+          borderWidth="1px"
+          boxShadow="xl"
+        >
           <ModalHeader
-            fontSize="40px"
+            fontSize="2xl"
             fontFamily="Work sans"
-            d="flex"
-            justifyContent="center"
+            color="white"
+            textAlign="center"
+            borderBottom="1px"
+            borderColor="gray.700"
+            pb={4}
           >
             {user.name}
           </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack spacing={4} align="center">
+          <ModalCloseButton color="white" />
+          <ModalBody py={6}>
+            <VStack spacing={6} align="center">
               <Box position="relative" w="150px" h="150px">
                 <Image
                   borderRadius="full"
@@ -132,6 +153,7 @@ const ProfileModal = ({ user, children }) => {
                   src={user.pic}
                   alt={user.name}
                   objectFit="cover"
+                  boxShadow="lg"
                 />
                 <IconButton
                   aria-label="Change profile picture"
@@ -155,21 +177,30 @@ const ProfileModal = ({ user, children }) => {
                 />
               </Box>
               <Text
-                fontSize={{ base: "28px", md: "30px" }}
+                fontSize="lg"
                 fontFamily="Work sans"
+                color="gray.300"
+                textAlign="center"
               >
                 Email: {user.email}
               </Text>
               {picLoading && (
                 <HStack spacing={2}>
-                  <Spinner size="sm" />
-                  <Text fontSize="sm" color="gray.500">Updating profile picture...</Text>
+                  <Spinner size="sm" color="blue.400" />
+                  <Text fontSize="sm" color="gray.400">Updating profile picture...</Text>
                 </HStack>
               )}
             </VStack>
           </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
+          <ModalFooter borderTop="1px" borderColor="gray.700">
+            <Button 
+              onClick={onClose} 
+              colorScheme="blue"
+              variant="ghost"
+              _hover={{ bg: "gray.700" }}
+            >
+              Close
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

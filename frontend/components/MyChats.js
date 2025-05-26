@@ -52,12 +52,16 @@ const MyChats = ({ fetchAgain }) => {
       flexDir="column"
       alignItems="center"
       p={3}
-      bg="white"
+      bg="gray.800"
       w="31%"
-      borderRadius="lg"
+      borderRadius="xl"
       borderWidth="1px"
-      boxShadow="md"
-      minH="80vh"
+      borderColor="gray.700"
+      boxShadow="lg"
+      h="calc(100vh - 100px)"
+      overflow="hidden"
+      transition="all 0.3s ease"
+      _hover={{ boxShadow: "xl" }}
     >
       <Box
         pb={3}
@@ -68,8 +72,10 @@ const MyChats = ({ fetchAgain }) => {
         w="100%"
         justifyContent="space-between"
         alignItems="center"
+        borderBottom="1px"
+        borderColor="gray.700"
       >
-        My Chats
+        <Text fontWeight="bold" color="white">My Chats</Text>
         <GroupChatModal>
           <Button
             d="flex"
@@ -85,6 +91,8 @@ const MyChats = ({ fetchAgain }) => {
             overflow="hidden"
             textOverflow="ellipsis"
             maxW={{ base: "120px", md: "140px", lg: "160px" }}
+            _hover={{ transform: "scale(1.05)", bg: "blue.500" }}
+            transition="all 0.2s ease"
           >
             New Group Chat
           </Button>
@@ -94,44 +102,49 @@ const MyChats = ({ fetchAgain }) => {
         d="flex"
         flexDir="column"
         p={3}
-        bg="#F8F8F8"
+        bg="gray.900"
         w="100%"
-        h="100%"
+        h="calc(100% - 60px)"
         borderRadius="lg"
         overflowY="auto"
         boxShadow="xs"
       >
         {chats ? (
-          <Stack spacing={2} divider={<Box borderBottom="1px solid #e2e8f0" />}>
+          <Stack spacing={3}>
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "#38B2AC" : "white"}
-                color={selectedChat === chat ? "white" : "black"}
-                px={3}
-                py={2}
+                bg={selectedChat === chat ? "blue.600" : "gray.800"}
+                color={selectedChat === chat ? "white" : "gray.200"}
+                px={4}
+                py={3}
                 borderRadius="lg"
                 key={chat._id}
                 d="flex"
                 alignItems="center"
-                _hover={{ bg: selectedChat === chat ? "#319795" : "gray.100" }}
+                _hover={{ 
+                  bg: selectedChat === chat ? "blue.500" : "gray.700",
+                  transform: "translateY(-2px)",
+                  boxShadow: "md"
+                }}
                 boxShadow={selectedChat === chat ? "md" : "sm"}
-                transition="background 0.2s"
+                transition="all 0.2s ease"
               >
                 <Box mr={3}>
                   <Avatar
                     size="sm"
                     name={chat.isGroupChat ? chat.chatName : getSender(loggedUser, chat.users)}
                     src={chat.isGroupChat ? undefined : chat.users.find(u => u._id !== loggedUser?._id)?.pic}
+                    boxShadow="md"
                   />
                 </Box>
                 <Box flex="1">
-                  <Text fontWeight="bold" noOfLines={1}>
+                  <Text fontWeight="bold" noOfLines={1} fontSize="sm">
                     {chat.isGroupChat ? chat.chatName : getSender(loggedUser, chat.users)}
                   </Text>
                   {chat.latestMessage && (
-                    <Text fontSize="xs" color="gray.500" noOfLines={1}>
+                    <Text fontSize="xs" color={selectedChat === chat ? "white" : "gray.400"} noOfLines={1}>
                       <b>{chat.latestMessage.sender.name}:</b> {chat.latestMessage.content.length > 50 ? chat.latestMessage.content.substring(0, 51) + "..." : chat.latestMessage.content}
                     </Text>
                   )}

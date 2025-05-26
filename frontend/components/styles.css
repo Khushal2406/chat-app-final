@@ -1,6 +1,62 @@
 .messages {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: none;
+  height: 100%;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add smooth transitions for all interactive elements */
+button, 
+input, 
+[role="button"] {
+  transition: all 0.2s ease;
+}
+
+/* Add hover effects for interactive elements */
+button:hover,
+[role="button"]:hover {
+  transform: translateY(-1px);
+}
+
+/* Add focus styles for better accessibility */
+button:focus,
+input:focus {
+  outline: 2px solid #3182CE;
+  outline-offset: 2px;
+}
+
+/* Add loading animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2D3748;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4A5568;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #718096;
 }

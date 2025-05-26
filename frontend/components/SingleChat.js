@@ -7,7 +7,7 @@ import "./styles.css";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ViewIcon } from "@chakra-ui/icons";
 import ProfileModal from "./miscellaneous/ProfileModal";
 import ScrollableChat from "./ScrollableChat";
 import TypingIndicator from "./TypingIndicator";
@@ -264,47 +264,78 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     <>
       {selectedChat ? (
         <>
-          <Text
-            fontSize={{ base: "28px", md: "30px" }}
-            pb={3}
-            px={2}
+          <Box
+            pb={2}
+            px={3}
             w="100%"
             fontFamily="Work sans"
             d="flex"
-            justifyContent={{ base: "space-between" }}
+            justifyContent="space-between"
             alignItems="center"
+            borderBottom="1px"
+            borderColor="gray.700"
+            bg="gray.800"
+            position="sticky"
+            top={0}
+            zIndex={1}
           >
-            <IconButton
-              d={{ base: "flex", md: "none" }}
-              icon={<ArrowBackIcon />}
-              onClick={() => setSelectedChat("")}
-            />
-            {!selectedChat.isGroupChat ? (
-              <>
-                {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
-              </>
-            ) : (
-              <>
-                {selectedChat.chatName.toUpperCase()}
-                <UpdateGroupChatModal
-                  fetchAgain={fetchAgain}
-                  setFetchAgain={setFetchAgain}
-                  fetchMessages={fetchMessages}
-                />
-              </>
+            <Box d="flex" alignItems="center" gap={2}>
+              <IconButton
+                d={{ base: "flex", md: "none" }}
+                icon={<ArrowBackIcon />}
+                onClick={() => setSelectedChat("")}
+                variant="ghost"
+                _hover={{ bg: "gray.700" }}
+                size="sm"
+                color="white"
+              />
+              {!selectedChat.isGroupChat ? (
+                <Text fontSize="lg" fontWeight="bold" color="white">
+                  {getSender(user, selectedChat.users)}
+                </Text>
+              ) : (
+                <>
+                  <Text fontSize="lg" fontWeight="bold" color="white">
+                    {selectedChat.chatName.toUpperCase()}
+                  </Text>
+                  <UpdateGroupChatModal
+                    fetchAgain={fetchAgain}
+                    setFetchAgain={setFetchAgain}
+                    fetchMessages={fetchMessages}
+                  />
+                </>
+              )}
+            </Box>
+            {!selectedChat.isGroupChat && (
+              <Box>
+                <ProfileModal user={getSenderFull(user, selectedChat.users)}>
+                  <IconButton
+                    aria-label="View Profile"
+                    icon={<ViewIcon />}
+                    size="sm"
+                    variant="ghost"
+                    color="gray.400"
+                    _hover={{ 
+                      color: "white",
+                      bg: "gray.700",
+                      transform: "scale(1.1)"
+                    }}
+                    transition="all 0.2s"
+                  />
+                </ProfileModal>
+              </Box>
             )}
-          </Text>
+          </Box>
           <Box
             d="flex"
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg="#E8E8E8"
+            bg="gray.900"
             w="100%"
-            h="100%"
+            h="calc(100% - 50px)"
             borderRadius="lg"
-            overflowY="hidden"
+            overflow="hidden"
           >
             {loading ? (
               <Spinner
@@ -313,6 +344,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 h={20}
                 alignSelf="center"
                 margin="auto"
+                color="blue.400"
+                thickness="4px"
               />
             ) : (
               <div className="messages">
@@ -321,21 +354,28 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </div>
             )}
 
-            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+            <FormControl onKeyDown={sendMessage} isRequired mt={2}>
               {istyping ? <TypingIndicator /> : <></>}
               <Input
                 variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
+                bg="gray.800"
+                placeholder="Type a message..."
                 value={newMessage}
                 onChange={typingHandler}
+                _hover={{ bg: "gray.700" }}
+                _focus={{ bg: "gray.700", borderColor: "blue.400" }}
+                boxShadow="sm"
+                borderRadius="full"
+                size="md"
+                color="white"
+                _placeholder={{ color: "gray.400" }}
               />
             </FormControl>
           </Box>
         </>
       ) : (
         <Box d="flex" alignItems="center" justifyContent="center" h="100%">
-          <Text fontSize="3xl" pb={3} fontFamily="Work sans">
+          <Text fontSize="3xl" pb={3} fontFamily="Work sans" color="gray.300">
             Click on a user to start chatting
           </Text>
         </Box>

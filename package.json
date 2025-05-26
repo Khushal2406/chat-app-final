@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "nodemon backend/server.js",
+    "build": " npm i && npm i --prefix frontend && npm run build --prefix frontend"
   },
   "author": "",
   "license": "ISC",

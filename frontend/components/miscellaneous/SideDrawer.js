@@ -130,26 +130,28 @@ const SideDrawer = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg="white"
+        bg="gray.800"
         w="100%"
         p="5px 5px 5px 5px"
         borderWidth="5px"
+        borderColor="gray.700"
+        boxShadow="md"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" onClick={onOpen} size="md">
+          <Button variant="ghost" onClick={onOpen} size="md" color="white" _hover={{ bg: "gray.700" }}>
             <SearchIcon />
             <Text d={{ base: "none", md: "flex" }} px={4}>
               Search User
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans" color="black">
+        <Text fontSize="2xl" fontFamily="Work sans" color="white">
           Talk-A-Tive
         </Text>
-        <div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Menu>
             <MenuButton p={1} position="relative">
-              <BellIcon fontSize="2xl" m={1} />
+              <BellIcon fontSize="2xl" m={1} color="white" />
               {notification.length > 0 && (
                 <Badge
                   colorScheme="red"
@@ -164,8 +166,8 @@ const SideDrawer = () => {
                 </Badge>
               )}
             </MenuButton>
-            <MenuList pl={2}>
-              {!notification.length && "No New Messages"}
+            <MenuList bg="gray.800" borderColor="gray.700">
+              {!notification.length && <Text color="gray.400" px={2}>No New Messages</Text>}
               {notification.map((notif) => (
                 <MenuItem
                   key={notif._id}
@@ -173,6 +175,8 @@ const SideDrawer = () => {
                     setSelectedChat(notif.chat);
                     setNotification(notification.filter((n) => n !== notif));
                   }}
+                  _hover={{ bg: "gray.700" }}
+                  color="white"
                 >
                   {notif.chat.isGroupChat
                     ? `New Message in ${notif.chat.chatName}`
@@ -182,7 +186,7 @@ const SideDrawer = () => {
             </MenuList>
           </Menu>
           <Menu>
-            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
+            <MenuButton as={Button} bg="gray.800" rightIcon={<ChevronDownIcon color="white" />} _hover={{ bg: "gray.700" }}>
               <Avatar
                 size="sm"
                 cursor="pointer"
@@ -190,21 +194,21 @@ const SideDrawer = () => {
                 src={user.pic}
               />
             </MenuButton>
-            <MenuList>
+            <MenuList bg="gray.800" borderColor="gray.700">
               <ProfileModal user={user}>
-                <MenuItem>My Profile</MenuItem>
+                <MenuItem _hover={{ bg: "gray.700" }} color="white">My Profile</MenuItem>
               </ProfileModal>
-              <MenuDivider />
-              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+              <MenuDivider borderColor="gray.700" />
+              <MenuItem onClick={logoutHandler} _hover={{ bg: "gray.700" }} color="white">Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
       </Box>
 
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
+        <DrawerContent bg="gray.800" borderRight="1px" borderColor="gray.700">
+          <DrawerHeader borderBottomWidth="1px" borderColor="gray.700" color="white">Search Users</DrawerHeader>
           <DrawerBody>
             <Box d="flex" pb={2}>
               <Input
@@ -212,8 +216,14 @@ const SideDrawer = () => {
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                bg="gray.700"
+                color="white"
+                borderColor="gray.600"
+                _placeholder={{ color: "gray.400" }}
+                _hover={{ borderColor: "gray.500" }}
+                _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
               />
-              <Button onClick={handleSearch}>Go</Button>
+              <Button onClick={handleSearch} colorScheme="blue">Go</Button>
             </Box>
             {loading ? (
               <ChatLoading />
@@ -226,7 +236,7 @@ const SideDrawer = () => {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" d="flex" color="blue.400" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
