@@ -18,15 +18,15 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
-import api from "../../src/config/api";
 
 const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [groupChatName, setGroupChatName] = useState("");
+  const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,13 +34,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const toast = useToast();
 
   const { selectedChat, setSelectedChat, user } = ChatState();
-
-  // Reset groupChatName when modal opens
-  useEffect(() => {
-    if (isOpen && selectedChat) {
-      setGroupChatName(selectedChat.chatName);
-    }
-  }, [isOpen, selectedChat]);
 
   const handleSearch = async (query) => {
     setSearch(query);
@@ -55,12 +48,13 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await api.get(`/user?search=${search}`, config);
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
       toast({
-        title: "Error Occurred!",
+        title: "Error Occured!",
         description: "Failed to Load the Search Results",
         status: "error",
         duration: 5000,
@@ -72,17 +66,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   };
 
   const handleRename = async () => {
-    if (!groupChatName || groupChatName.trim() === "") {
-      toast({
-        title: "Error!",
-        description: "Please enter a valid group name",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      return;
-    }
+    if (!groupChatName) return;
 
     try {
       setRenameLoading(true);
@@ -91,38 +75,32 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await api.put(
-        `/chat/rename`,
+      const { data } = await axios.put(
+        `/api/chat/rename`,
         {
           chatId: selectedChat._id,
-          chatName: groupChatName.trim(),
+          chatName: groupChatName,
         },
         config
       );
 
+      console.log(data._id);
+      // setSelectedChat("");
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
-      toast({
-        title: "Success!",
-        description: "Group name updated successfully",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      onClose();
+      setRenameLoading(false);
     } catch (error) {
       toast({
-        title: "Error Occurred!",
-        description: error.response?.data?.message || "Failed to rename group",
+        title: "Error Occured!",
+        description: error.response.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
-    } finally {
       setRenameLoading(false);
     }
+    setGroupChatName("");
   };
 
   const handleAddUser = async (user1) => {
@@ -155,8 +133,8 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await api.put(
-        `/chat/groupadd`,
+      const { data } = await axios.put(
+        `/api/chat/groupadd`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -200,8 +178,8 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await api.put(
-        `/chat/groupremove`,
+      const { data } = await axios.put(
+        `/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -229,37 +207,29 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      <IconButton 
-        d={{ base: "flex" }} 
-        icon={<ViewIcon />} 
-        onClick={onOpen}
-        aria-label="Update Group"
-        size="sm"
-        variant="ghost"
-        color="gray.400"
-        _hover={{ 
-          color: "white",
-          bg: "gray.700",
-          transform: "scale(1.1)"
-        }}
-        transition="all 0.2s"
-      />
+      <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
-        <ModalOverlay backdropFilter="blur(10px)" />
-        <ModalContent bg="gray.800" borderColor="gray.700" boxShadow="xl">
-          <ModalHeader fontSize="35px" fontFamily="Work sans" color="white" d="flex" justifyContent="center">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            fontSize="35px"
+            fontFamily="Work sans"
+            d="flex"
+            justifyContent="center"
+          >
             {selectedChat.chatName}
           </ModalHeader>
-          <ModalCloseButton color="white" />
+
+          <ModalCloseButton />
           <ModalBody d="flex" flexDir="column" alignItems="center">
             <Box w="100%" d="flex" flexWrap="wrap" pb={3}>
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
                   key={u._id}
                   user={u}
-                  handleFunction={() => handleRemove(u)}
                   admin={selectedChat.groupAdmin}
+                  handleFunction={() => handleRemove(u)}
                 />
               ))}
             </Box>
@@ -269,42 +239,27 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
                 mb={3}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
-                bg="gray.700"
-                color="white"
-                borderColor="gray.600"
-                _placeholder={{ color: "gray.400" }}
-                _hover={{ borderColor: "gray.500" }}
-                _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
               />
+              <Button
+                variant="solid"
+                colorScheme="teal"
+                ml={1}
+                isLoading={renameloading}
+                onClick={handleRename}
+              >
+                Update
+              </Button>
             </FormControl>
-            <Button
-              colorScheme="blue"
-              onClick={handleRename}
-              isLoading={renameloading}
-              mb={3}
-              w="100%"
-              _hover={{ transform: "scale(1.02)" }}
-              transition="all 0.2s"
-            >
-              Update Chat
-            </Button>
-            
             <FormControl>
               <Input
-                placeholder="Add Users eg: John, Piyush, Jane"
+                placeholder="Add User to group"
                 mb={1}
-                value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                bg="gray.700"
-                color="white"
-                borderColor="gray.600"
-                _placeholder={{ color: "gray.400" }}
-                _hover={{ borderColor: "gray.500" }}
-                _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
               />
             </FormControl>
+
             {loading ? (
-              <Spinner size="lg" color="blue.400" />
+              <Spinner size="lg" />
             ) : (
               searchResult?.map((user) => (
                 <UserListItem

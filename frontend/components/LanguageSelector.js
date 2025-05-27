@@ -21,21 +21,6 @@ const LanguageSelector = () => {
       width="200px"
       marginLeft="10px"
       aria-label="Select language"
-      bg="gray.700"
-      color="white"
-      borderColor="gray.600"
-      _hover={{ borderColor: "gray.500" }}
-      _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
-      _placeholder={{ color: "gray.400" }}
-      sx={{
-        option: {
-          bg: "gray.800",
-          color: "white",
-          _hover: {
-            bg: "gray.700"
-          }
-        }
-      }}
     >
       <option value="default">Default</option>
       <option value="en">English</option>
@@ -47,4 +32,4 @@ const LanguageSelector = () => {
   );
 };
 
-export default LanguageSelector;
+export default LanguageSelector; 

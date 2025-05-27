@@ -29,8 +29,6 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/translate", translateRoutes);
 
-
-
 // Create HTTP server
 const server = http.createServer(app);
 

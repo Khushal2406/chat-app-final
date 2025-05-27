@@ -135,10 +135,11 @@ const Signup = () => {
 
   return (
     <Box
-      bg="gray.900"
+      // minH="100vh"
+      bg="white"
       py={12}
       px={4}
-      textColor="white"
+      textColor={"black"}
     >
       <Container 
         maxW="lg" 
@@ -146,13 +147,13 @@ const Signup = () => {
         px={{ base: '0', sm: '8' }}
       >
         <Box
-          bg="gray.800"
+          bg="white"
           py="8"
           px={{ base: '4', md: '10' }}
           shadow="xl"
           rounded="xl"
           border="1px"
-          borderColor="gray.700"
+          borderColor="gray.200"
         >
           <VStack spacing="6">
             <Box textAlign="center" w="full">
@@ -160,67 +161,64 @@ const Signup = () => {
                 size="lg" 
                 fontWeight="bold" 
                 mb="2"
-                color="white"
+                color="gray.800"
               >
                 Create your account
               </Heading>
-              <Text color="gray.400" fontSize="lg">
+              <Text color="gray.600" fontSize="lg">
                 Join our community today
               </Text>
             </Box>
 
             <VStack spacing="5" w="90%" alignItems="left">
               <FormControl isRequired>
-                <FormLabel color="gray.300" fontWeight="medium">Name</FormLabel>
+                <FormLabel color="gray.700" fontWeight="medium">Name</FormLabel>
                 <Input
                   size="lg"
                   type="text"
                   placeholder="Enter Your Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  bg="gray.700"
-                  borderColor="gray.600"
+                  bg="white"
+                  borderColor="gray.500"
                   width="100%"
-                  color="white"
-                  _hover={{ borderColor: "gray.500" }}
-                  _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
-                  _placeholder={{ color: "gray.400" }}
+                  color="black"
+                  _hover={{ borderColor: "gray.400" }}
+                  _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
                 />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="gray.300" fontWeight="medium">Email Address</FormLabel>
+                <FormLabel color="gray.700" fontWeight="medium">Email Address</FormLabel>
                 <Input
                   size="lg"
                   type="email"
                   placeholder="Enter Your Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  bg="gray.700"
+                  bg="white"
                   width="100%"
-                  color="white"
-                  borderColor="gray.600"
-                  _hover={{ borderColor: "gray.500" }}
-                  _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
-                  _placeholder={{ color: "gray.400" }}
+                  color="black"
+                  borderColor="gray.300"
+                  _hover={{ borderColor: "gray.400" }}
+                  _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
                 />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="gray.300" fontWeight="medium">Password</FormLabel>
+                <FormLabel color="gray.700" fontWeight="medium">Password</FormLabel>
                 <InputGroup size="lg">
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    bg="gray.700"
+                    bg="white"
                     width="80%"
-                    color="white"
-                    borderColor="gray.600"
-                    _hover={{ borderColor: "gray.500" }}
-                    _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
-                    _placeholder={{ color: "gray.400" }}
+                    color="black"
+                    borderColor="gray.300"
+                    _hover={{ borderColor: "gray.400" }}
+                    _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
                   />
                   <InputRightElement width="4.5rem">
                     <Button
@@ -228,8 +226,8 @@ const Signup = () => {
                       size="sm"
                       onClick={handlePasswordClick}
                       variant="ghost"
-                      color="gray.400"
-                      _hover={{ color: "white", bg: "gray.600" }}
+                      color="gray.600"
+                      _hover={{ color: "gray.800" }}
                     >
                       {showPassword ? "Hide" : "Show"}
                     </Button>
@@ -238,20 +236,19 @@ const Signup = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="gray.300" fontWeight="medium">Confirm Password</FormLabel>
+                <FormLabel color="gray.700" fontWeight="medium">Confirm Password</FormLabel>
                 <InputGroup size="lg">
                   <Input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm password"
                     value={confirmpassword}
                     onChange={(e) => setConfirmpassword(e.target.value)}
-                    bg="gray.700"
+                    bg="white"
                     width="80%"
-                    color="white"
-                    borderColor="gray.600"
-                    _hover={{ borderColor: "gray.500" }}
-                    _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px blue.400" }}
-                    _placeholder={{ color: "gray.400" }}
+                    color="black"
+                    borderColor="gray.300"
+                    _hover={{ borderColor: "gray.400" }}
+                    _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
                   />
                   <InputRightElement width="4.5rem">
                     <Button
@@ -259,8 +256,8 @@ const Signup = () => {
                       size="sm"
                       onClick={handleConfirmPasswordClick}
                       variant="ghost"
-                      color="gray.400"
-                      _hover={{ color: "white", bg: "gray.600" }}
+                      color="gray.600"
+                      _hover={{ color: "gray.800" }}
                     >
                       {showConfirmPassword ? "Hide" : "Show"}
                     </Button>
@@ -269,27 +266,27 @@ const Signup = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color="gray.300" fontWeight="medium">Profile Picture</FormLabel>
+                <FormLabel color="gray.700" fontWeight="medium">Profile Picture</FormLabel>
                 <Input
                   size="lg"
                   type="file"
                   accept="image/*"
                   onChange={(e) => postDetails(e.target.files[0])}
                   p={2}
-                  bg="gray.700"
-                  borderColor="gray.600"
-                  _hover={{ borderColor: "gray.500" }}
+                  bg="white"
+                  borderColor="gray.300"
+                  _hover={{ borderColor: "gray.400" }}
                   sx={{
                     '::file-selector-button': {
                       height: '2.5rem',
                       padding: '0 1rem',
-                      background: 'gray.600',
+                      background: 'gray.50',
                       border: 'none',
                       borderRadius: 'md',
                       marginRight: '1rem',
-                      color: 'white',
+                      color: 'gray.700',
                       cursor: 'pointer',
-                      _hover: { bg: 'gray.500' }
+                      _hover: { bg: 'gray.100' }
                     }
                   }}
                 />
